@@ -5,6 +5,7 @@ import RelatedPostSummary from "@/components/RelatedPostSummary";
 import axios from "axios";
 import { useState } from "react";
 import { URL_API } from "@/components/URL";
+import Head from "next/head";
 
 const fetcher = async (params = null) => {
   return await axios
@@ -29,6 +30,9 @@ const Relates = (props) => {
 
   return (
     <>
+      <Head>
+        <title>Related Pages - Sandbox HSI Level 3</title>
+      </Head>
       <Nav hideButtons white />
       <RelatedPostSummary article={article} />
       <div className="flex flex-col items-center pb-8">

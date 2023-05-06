@@ -4,6 +4,7 @@ import RelatedSection from "@/components/RelatedSection";
 import axios from "axios";
 import useSWR from "swr";
 import { URL_API } from "@/components/URL";
+import Head from "next/head";
 
 const fetcher = async (params) => {
   const related = await axios
@@ -31,6 +32,9 @@ const Slug = (props) => {
 
   return (
     <>
+      <Head>
+        <title>{article.data.title} - Sandbox HSI Level 3</title>
+      </Head>
       <Nav hideButtons white />
       <PostDetail article={article.data} />
       {data && !isLoading && (

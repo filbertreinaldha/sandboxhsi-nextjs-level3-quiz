@@ -5,6 +5,7 @@ import axios from "axios";
 import { useState } from "react";
 import { useRouter } from "next/router";
 import { URL_API } from "@/components/URL";
+import Head from "next/head";
 
 const openSans = Open_Sans({
   subsets: ["latin"],
@@ -35,6 +36,9 @@ export default function Home({ initialArticles, params }) {
 
   return (
     <>
+      <Head>
+        <title>Home - Sandbox HSI Level 3</title>
+      </Head>
       <Nav
         sort={sort}
         changeSort={(sort) => {
