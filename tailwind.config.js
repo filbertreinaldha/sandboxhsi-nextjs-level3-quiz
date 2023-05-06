@@ -17,6 +17,10 @@ module.exports = {
       },
       colors: {
         bggray: "#F9F9FB",
+        lightgray: "#9B9B9B",
+        gray: "#4A4A4A",
+        watermelon: "#FF5480",
+        cabin: "#111210",
       },
     },
   },
