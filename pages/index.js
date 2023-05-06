@@ -1,9 +1,7 @@
-import Image from "next/image";
 import Nav from "../components/Nav";
 import PostList from "../components/PostList";
 import { Open_Sans } from "next/font/google";
 import axios from "axios";
-import useSWR, { SWRConfig } from "swr";
 import { useState } from "react";
 import { useRouter } from "next/router";
 import { URL_API } from "@/components/URL";

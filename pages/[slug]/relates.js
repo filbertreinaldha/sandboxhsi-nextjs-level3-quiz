@@ -33,7 +33,7 @@ const Relates = (props) => {
       <RelatedPostSummary article={article} />
       <div className="flex flex-col items-center pb-8">
         {data.map((article, idx) => (
-          <RelatedPost article={article} index={idx} />
+          <RelatedPost article={article} index={idx} key={article.id} />
         ))}
 
         <LoadMore
