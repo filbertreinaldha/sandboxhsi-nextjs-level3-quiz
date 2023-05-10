@@ -10,14 +10,14 @@ const fetcher = async ({ url, params }) => {
       params: {
         categoryId: params.categoryId,
         excludedArticleId: params.exclude,
-        perPage: 1,
+        perPage: 2,
       },
     })
     .then((res) => res.data);
 };
 
 const RelatedSection = ({ article }) => {
-  const { data, isLoading } = useSWR(
+  const { data, isValidating } = useSWR(
     {
       url: URL_API,
       params: {
@@ -30,7 +30,7 @@ const RelatedSection = ({ article }) => {
   const meta = data?.meta;
   const related = data?.data;
 
-  if (data && !isLoading) {
+  if (!isValidating && related.length > 0) {
     return (
       <div className="space-y-8">
         <div className="flex flex-row justify-between items-center">
