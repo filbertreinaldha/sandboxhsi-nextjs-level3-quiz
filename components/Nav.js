@@ -25,7 +25,7 @@ const Nav = (props) => {
           onClick={() => changeSort("popular")}
           className={`${
             sort == "popular"
-              ? "text-white bg-watermelon rounded-lg px-4 py-1"
+              ? "text-white bg-watermelon rounded-lg px-4 py-1 focus:outline-watermelon-dark"
               : "px-4 py-1"
           }`}
         >
@@ -35,7 +35,7 @@ const Nav = (props) => {
           onClick={() => changeSort("new")}
           className={`${
             sort == "new"
-              ? "text-white bg-watermelon rounded-lg px-4 py-1"
+              ? "text-white bg-watermelon rounded-lg px-4 py-1 focus:outline-watermelon-dark"
               : "px-4 py-1"
           }`}
         >

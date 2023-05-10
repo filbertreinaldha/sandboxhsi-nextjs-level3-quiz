@@ -2,9 +2,9 @@ import Nav from "../components/Nav";
 import PostList from "../components/PostList";
 import { Open_Sans } from "next/font/google";
 import axios from "axios";
-import { useState } from "react";
 import { useRouter } from "next/router";
 import { URL_API } from "@/components/URL";
+import useSWRInfinite, { unstable_serialize } from "swr/infinite";
 import Head from "next/head";
 
 const openSans = Open_Sans({
@@ -13,26 +13,18 @@ const openSans = Open_Sans({
   variable: "--font-opensans",
 });
 
-const fetcher = async (params = null) => {
-  return await axios.get(URL_API, { params }).then((res) => res.data);
+const fetcher = async ({ url, params = null }) => {
+  return await axios.get(url, { params }).then((res) => res.data);
 };
 
-export default function Home({ initialArticles, params }) {
-  const [meta, setMeta] = useState(initialArticles.meta);
-  const [data, setData] = useState(initialArticles.data);
-  const [sort, setSort] = useState(params.sort || "new");
-  const [isLoading, setLoading] = useState(false);
+export default function Home({ initialArticles }) {
   const router = useRouter();
-
-  const getArticles = async (page, sort = "new", append = true) => {
-    setLoading(true);
-    const newArticles = await fetcher({ page: page, sort: sort });
-    setMeta(newArticles.meta);
-
-    if (append) setData((prevArticle) => prevArticle.concat(newArticles.data));
-    else setData(newArticles.data);
-    setLoading(false);
-  };
+  const sort = router.query?.sort || "new";
+  const { data, size, setSize, isValidating } = useSWRInfinite((index) => {
+    return { url: URL_API, params: { page: index + 1, sort: sort } };
+  }, fetcher);
+  const meta = data?.at(size - 1)?.meta || initialArticles.meta;
+  const articles = data?.map((d) => d.data).flat() || initialArticles.data;
 
   return (
     <>
@@ -42,29 +34,31 @@ export default function Home({ initialArticles, params }) {
       <Nav
         sort={sort}
         changeSort={(sort) => {
-          setSort(sort);
           router.push("?sort=" + sort, undefined, { shallow: true });
-          getArticles(1, sort, false);
+          setSize(1);
         }}
       />
-      <PostList
-        articles={data}
-        fetchMore={() => getArticles(meta.pagination.page + 1, sort)}
-        noMore={meta.pagination.page == meta.pagination.totalPages}
-        isLoading={isLoading}
-      />
+      {data && (
+        <PostList
+          articles={articles}
+          fetchMore={() => {
+            if (size < meta?.pagination.totalPages) setSize(size + 1);
+          }}
+          noMore={meta?.pagination.page == meta?.pagination.totalPages}
+          isLoading={isValidating}
+        />
+      )}
     </>
   );
 }
 
 export async function getServerSideProps(props) {
   const params = props.query || {};
-  const initialArticles = await fetcher(params);
+  const initialArticles = await fetcher({ url: URL_API, params: params });
 
   return {
     props: {
       initialArticles,
-      params,
     },
   };
 }

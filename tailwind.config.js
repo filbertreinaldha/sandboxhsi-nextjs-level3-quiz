@@ -19,7 +19,7 @@ module.exports = {
         bggray: "#F9F9FB",
         lightgray: "#9B9B9B",
         gray: "#4A4A4A",
-        watermelon: "#FF5480",
+        watermelon: { DEFAULT: "#FF5480", dark: "#F05074" },
         cabin: "#111210",
       },
     },
