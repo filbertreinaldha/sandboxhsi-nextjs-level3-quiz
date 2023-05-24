@@ -2,7 +2,7 @@ import Nav from "@/components/Nav";
 import PostDetail from "@/components/PostDetail";
 import RelatedSection from "@/components/RelatedSection";
 import axios from "axios";
-import { URL_API } from "@/components/URL";
+import { URL_API } from "@/constants/URL";
 import Head from "next/head";
 
 const Slug = ({ article }) => {

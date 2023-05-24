@@ -3,13 +3,14 @@ import Nav from "@/components/Nav";
 import RelatedPost from "@/components/RelatedPost";
 import RelatedPostSummary from "@/components/RelatedPostSummary";
 import axios from "axios";
-import { URL_API } from "@/components/URL";
+import { URL_API } from "@/constants/URL";
 import Head from "next/head";
 import useSWRInfinite from "swr/infinite";
 
-const fetcher = async ({ url, params = null }) => {
+const fetcher = async (params) => {
+  const { url, ...fetchParams } = params;
   return await axios
-    .get(url, { params })
+    .get(url, { params: fetchParams })
     .then((res) => res.data)
     .catch((e) => e.response);
 };
@@ -18,11 +19,8 @@ const Relates = (props) => {
   const { article, relatesParam, initRelates } = props;
   const { data, size, setSize, isValidating } = useSWRInfinite((index) => {
     return {
-      url: URL_API,
-      params: {
-        page: index + 1,
-        ...relatesParam,
-      },
+      page: index + 1,
+      ...relatesParam,
     };
   }, fetcher);
   const meta = data?.at(size - 1)?.meta || initRelates.meta;
@@ -65,14 +63,12 @@ export const getServerSideProps = async ({ params }) => {
   }
 
   const relatesParam = {
+    url: URL_API,
     categoryId: article.data.category.id,
     excludedArticleId: article.data.id,
   };
 
-  const relates = await fetcher({
-    url: URL_API,
-    params: relatesParam,
-  });
+  const relates = await fetcher(relatesParam);
 
   return {
     props: {

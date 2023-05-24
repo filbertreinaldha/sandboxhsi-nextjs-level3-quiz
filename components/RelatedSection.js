@@ -2,18 +2,13 @@ import Post from "./Post";
 import Link from "next/link";
 import axios from "axios";
 import useSWR from "swr";
-import { URL_API } from "@/components/URL";
+import { URL_API } from "@/constants/URL";
 
-const fetcher = async ({ url, params }) => {
-  return await axios
-    .get(url, {
-      params: {
-        categoryId: params.categoryId,
-        excludedArticleId: params.exclude,
-        perPage: 2,
-      },
-    })
-    .then((res) => res.data);
+const fetcher = async (params) => {
+  const { url, ...fetchParams } = params;
+  const result = await axios.get(url, fetchParams).then((res) => res.data);
+  console.log(result);
+  return result;
 };
 
 const RelatedSection = ({ article }) => {
@@ -22,7 +17,8 @@ const RelatedSection = ({ article }) => {
       url: URL_API,
       params: {
         categoryId: article.category.id,
-        exclude: article.id,
+        excludedArticleId: article.id,
+        perPage: 2,
       },
     },
     fetcher
