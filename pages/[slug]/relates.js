@@ -8,9 +8,9 @@ import Head from "next/head";
 import useSWRInfinite from "swr/infinite";
 
 const fetcher = async (params) => {
-  const { url, ...fetchParams } = params;
+  // const { url, ...fetchParams } = params;
   return await axios
-    .get(url, { params: fetchParams })
+    .get(URL_API, { params: params })
     .then((res) => res.data)
     .catch((e) => e.response);
 };
@@ -63,7 +63,7 @@ export const getServerSideProps = async ({ params }) => {
   }
 
   const relatesParam = {
-    url: URL_API,
+    // url: URL_API,
     categoryId: article.data.category.id,
     excludedArticleId: article.data.id,
   };

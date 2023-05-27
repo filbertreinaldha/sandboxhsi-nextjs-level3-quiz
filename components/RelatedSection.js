@@ -5,8 +5,8 @@ import useSWR from "swr";
 import { URL_API } from "@/constants/URL";
 
 const fetcher = async (params) => {
-  const { url, ...fetchParams } = params;
-  const result = await axios.get(url, fetchParams).then((res) => res.data);
+  // const { url, ...fetchParams } = params;
+  const result = await axios.get(URL_API, params).then((res) => res.data);
   console.log(result);
   return result;
 };
@@ -14,7 +14,7 @@ const fetcher = async (params) => {
 const RelatedSection = ({ article }) => {
   const { data, isValidating } = useSWR(
     {
-      url: URL_API,
+      // url: URL_API,
       params: {
         categoryId: article.category.id,
         excludedArticleId: article.id,

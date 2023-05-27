@@ -14,15 +14,15 @@ const openSans = Open_Sans({
 });
 
 const fetcher = async (params) => {
-  const { url, ...fetchParams } = params;
-  return await axios.get(url, { params: fetchParams }).then((res) => res.data);
+  // const { url, ...fetchParams } = params;
+  return await axios.get(URL_API, { params: params }).then((res) => res.data);
 };
 
 export default function Home({ initialArticles }) {
   const router = useRouter();
   const sort = router.query?.sort || "new";
   const { data, size, setSize, isValidating } = useSWRInfinite((index) => {
-    return { url: URL_API, page: index + 1, sort: sort };
+    return { page: index + 1, sort: sort };
   }, fetcher);
   const meta = data?.at(size - 1)?.meta || initialArticles.meta;
   const articles = data?.flatMap((d) => d.data) || initialArticles.data;
@@ -55,7 +55,7 @@ export default function Home({ initialArticles }) {
 
 export async function getServerSideProps(props) {
   const params = props.query || {};
-  params.url = URL_API;
+  // params.url = URL_API;
   const initialArticles = await fetcher(params);
 
   return {
