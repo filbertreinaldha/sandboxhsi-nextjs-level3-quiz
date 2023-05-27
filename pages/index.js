@@ -14,7 +14,6 @@ const openSans = Open_Sans({
 });
 
 const fetcher = async (params) => {
-  // const { url, ...fetchParams } = params;
   return await axios.get(URL_API, { params: params }).then((res) => res.data);
 };
 
@@ -55,7 +54,6 @@ export default function Home({ initialArticles }) {
 
 export async function getServerSideProps(props) {
   const params = props.query || {};
-  // params.url = URL_API;
   const initialArticles = await fetcher(params);
 
   return {
